@@ -62,16 +62,15 @@ def watershed(image:NDArrayInt) -> NDArrayInt:
                 current_label += 1
                 state[c] = State.BASIN
                 label[c] = current_label
-                for n in c.neighbors(limits):
-                    queue.append(c)
+                queue.append(c)
 
-                    while queue:
-                        p = queue.popleft()
-                        for n in p.neighbors(limits):
-                            if state[n] is State.MASK:
-                                label[n] = current_label
-                                state[n] = State.BASIN
-                                queue.append(n)
+                while queue:
+                    p = queue.popleft()
+                    for n in p.neighbors(limits):
+                        if state[n] is State.MASK:
+                            label[n] = current_label
+                            state[n] = State.BASIN
+                            queue.append(n)
 
     # Construct segment image.
     result = np.empty_like(image)
